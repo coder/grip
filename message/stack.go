@@ -28,7 +28,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 const maxLevels = 1024

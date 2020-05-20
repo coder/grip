@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 // FieldsMsgName is the name of the default "message" field in the

@@ -7,8 +7,8 @@ import (
 	"sync"
 	"unicode"
 
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/message"
 )
 
 // WriterSender wraps another sender and also provides an io.Writer.

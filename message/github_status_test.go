@@ -3,7 +3,7 @@ package message
 import (
 	"testing"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,7 +49,7 @@ func TestGithubStatusInvalidStatusesAreNotLoggable(t *testing.T) {
 	c = NewGithubStatusMessageWithRepo(level.Info, p)
 	assert.False(c.Loggable())
 
-	p.Owner = "mongodb"
+	p.Owner = "deciduosity"
 	p.Repo = ""
 	c = NewGithubStatusMessageWithRepo(level.Info, p)
 	assert.False(c.Loggable())

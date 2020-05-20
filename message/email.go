@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 // Email represents the parameters of an email message

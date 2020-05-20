@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 	"github.com/pkg/errors"
 )
 

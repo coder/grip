@@ -6,7 +6,7 @@ import (
 	"reflect"
 
 	"github.com/bluele/slack"
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 const (

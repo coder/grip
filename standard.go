@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/send"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/send"
 )
 
 var std = NewJournaler("grip")

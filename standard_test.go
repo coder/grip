@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/logging"
-	"github.com/mongodb/grip/message"
-	"github.com/mongodb/grip/send"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/logging"
+	"github.com/deciduosity/grip/message"
+	"github.com/deciduosity/grip/send"
 	"github.com/stretchr/testify/suite"
 )
 

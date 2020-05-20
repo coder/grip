@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/send"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/send"
 )
 
 // Appender is the slogger equivalent of a send.Sender, and this

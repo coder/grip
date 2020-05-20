@@ -18,10 +18,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mongodb/grip"
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/logging"
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/logging"
+	"github.com/deciduosity/grip/message"
 )
 
 const killOverrideVarName = "__GRIP_EXIT_OVERRIDE"

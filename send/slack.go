@@ -10,8 +10,8 @@ import (
 	"sync"
 
 	"github.com/bluele/slack"
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/message"
 )
 
 const (

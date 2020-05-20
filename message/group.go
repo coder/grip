@@ -5,7 +5,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 // GroupComposer handles groups of composers as a single message,

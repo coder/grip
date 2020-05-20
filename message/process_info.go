@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 	"github.com/shirou/gopsutil/net"
 	"github.com/shirou/gopsutil/process"
 )

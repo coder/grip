@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/message"
 	"github.com/stretchr/testify/suite"
 )
 

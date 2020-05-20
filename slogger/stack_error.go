@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 )
 
 // StackError is a grip re implementation of a type from legacy

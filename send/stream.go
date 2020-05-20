@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 )
 
 // this file contains tools to support the slogger interface

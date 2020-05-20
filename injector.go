@@ -1,6 +1,6 @@
 package grip
 
-import "github.com/mongodb/grip/send"
+import "github.com/deciduosity/grip/send"
 
 // SetSender swaps send.Sender() implementations in a logging
 // instance. Calls the Close() method on the existing instance before

@@ -3,7 +3,7 @@ package send
 import (
 	"log"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 )
 
 // ErrorHandler is a function that you can use define how a sender

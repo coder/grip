@@ -9,9 +9,9 @@ import (
 func TestPrintStack(t *testing.T) {
 	assert := assert.New(t)
 	stack := funcA()
-	assert.Contains(stack, `github.com/mongodb/grip/message/stack_test.go:26 (funcC)`)
-	assert.Contains(stack, `github.com/mongodb/grip/message/stack_test.go:22 (funcB)`)
-	assert.Contains(stack, `github.com/mongodb/grip/message/stack_test.go:18 (funcA)`)
+	assert.Contains(stack, `github.com/deciduosity/grip/message/stack_test.go:26 (funcC)`)
+	assert.Contains(stack, `github.com/deciduosity/grip/message/stack_test.go:22 (funcB)`)
+	assert.Contains(stack, `github.com/deciduosity/grip/message/stack_test.go:18 (funcA)`)
 }
 
 func funcA() string {

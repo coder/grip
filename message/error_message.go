@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 	"github.com/pkg/errors"
 )
 

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 // NewPlainLogger returns a configured sender that has no prefix and

@@ -9,7 +9,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 )
 
 const (

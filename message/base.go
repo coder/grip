@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/mongodb/grip/level"
+	"github.com/deciduosity/grip/level"
 )
 
 // Base provides a simple embedable implementation of some common

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mongodb/grip/message"
+	"github.com/deciduosity/grip/message"
 )
 
 type asyncGroupSender struct {

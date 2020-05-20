@@ -1,9 +1,9 @@
 package grip
 
 import (
-	"github.com/mongodb/grip/level"
-	"github.com/mongodb/grip/send"
-	"github.com/mongodb/grip/slogger"
+	"github.com/deciduosity/grip/level"
+	"github.com/deciduosity/grip/send"
+	"github.com/deciduosity/grip/slogger"
 )
 
 // NewJournalerFromSlogger takes a slogger logging instance and
