@@ -7,8 +7,9 @@ import (
 	"os"
 	"strings"
 
-	xmpp "github.com/mattn/go-xmpp"
 	"github.com/deciduosity/grip/message"
+	xmpp "github.com/mattn/go-xmpp"
+	"github.com/pkg/errors"
 )
 
 type xmppLogger struct {
@@ -170,18 +171,25 @@ type xmppClientImpl struct {
 }
 
 func (c *xmppClientImpl) Create(info XMPPConnectionInfo) error {
-	client, err := xmpp.NewClient(info.Hostname, info.Username, info.Password, false)
-	if err != nil {
-		errs := []string{err.Error()}
-		client, err = xmpp.NewClientNoTLS(info.Hostname, info.Username, info.Password, false)
-		if err != nil {
-			errs = append(errs, err.Error())
-			return fmt.Errorf("cannot connect to server '%s', as '%s': %s",
-				info.Hostname, info.Username, strings.Join(errs, "; "))
-		}
+	opts := xmpp.Options{
+		Host:     info.Hostname,
+		User:     info.Username,
+		Password: info.Password,
+	}
+	var err error
+	c.Client, err = opts.NewClient()
+	if err == nil {
+		return nil
+	}
+	errs := []string{err.Error()}
+
+	opts.NoTLS = true
+	opts.InsecureAllowUnencryptedAuth = true
+
+	c.Client, err = opts.NewClient()
+	if err == nil {
+		return nil
 	}
 
-	c.Client = client
-
-	return nil
+	return errors.Errorf("problem establishing connection to xmpp server: %s", strings.Join(append(errs, err.Error()), ";"))
 }
