@@ -12,9 +12,9 @@ import (
 	"strings"
 
 	jira "github.com/andygrunwald/go-jira"
-	"github.com/dghubble/oauth1"
 	"github.com/deciduosity/grip/level"
 	"github.com/deciduosity/grip/message"
+	"github.com/dghubble/oauth1"
 	"github.com/pkg/errors"
 	"github.com/trivago/tgo/tcontainer"
 )
@@ -117,7 +117,7 @@ func (j *jiraJournal) Send(m message.Composer) {
 
 		issueKey, err := j.opts.client.PostIssue(issueFields)
 		if err != nil {
-			j.errHandler(err, message.NewFormattedMessage(m.Priority(), m.String()))
+			j.ErrorHandler()(err, message.NewFormattedMessage(m.Priority(), m.String()))
 			return
 		}
 		populateKey(m, issueKey)

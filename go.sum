@@ -5,12 +5,18 @@ github.com/andygrunwald/go-jira v1.12.0 h1:JJi2cEDmDxVtTXxC8ruLDbtOU6pA4OLeL0niy
 github.com/andygrunwald/go-jira v1.12.0/go.mod h1:jYi4kFDbRPZTJdJOVJO4mpMMIwdB+rcZwSO58DzPd2I=
 github.com/bluele/slack v0.0.0-20180528010058-b4b4d354a079 h1:dm7wU6Dyf+rVGryOAB8/J/I+pYT/9AdG8dstD3kdMWU=
 github.com/bluele/slack v0.0.0-20180528010058-b4b4d354a079/go.mod h1:W679Ri2W93VLD8cVpEY/zLH1ow4zhJcCyjzrKxfM3QM=
+github.com/cenkalti/backoff v2.1.1+incompatible h1:tKJnvO2kl0zmb/jA5UKAt4VoEVw1qxKWjE/Bpp46npY=
+github.com/cenkalti/backoff v2.1.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
 github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf h1:iW4rZ826su+pqaw19uhpSCzhj44qo35pNgKFGqzDKkU=
 github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f h1:M2wB039zeS1/LZtN/3A7tWyfctiOBL4ty5PURBmDdWU=
+github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f/go.mod h1:xfg4uS5LEzOj8PgZV7SQYRHbG7jPUnelEiaAVJxmhJE=
 github.com/dghubble/oauth1 v0.6.0 h1:m1yC01Ohc/eF38jwZ8JUjL1a+XHHXtGQgK+MxQbmSx0=
 github.com/dghubble/oauth1 v0.6.0/go.mod h1:8pFdfPkv/jr8mkChVbNVuJ0suiHe278BtWI4Tk1ujxk=
+github.com/dghubble/sling v1.3.0 h1:pZHjCJq4zJvc6qVQ5wN1jo5oNZlNE0+8T/h0XeXBUKU=
+github.com/dghubble/sling v1.3.0/go.mod h1:XXShWaBWKzNLhu2OxikSNFrlsvowtz4kyRuXUG7oQKY=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/fatih/structs v1.0.0 h1:BrX964Rv5uQ3wwS+KRUAJCBBw5PQmgJfJ6v4yly5QwU=
@@ -27,6 +33,8 @@ github.com/google/go-github v17.0.0+incompatible h1:N0LgJ1j65A7kfXrZnUDaYCs/Sf4r
 github.com/google/go-github v17.0.0+incompatible/go.mod h1:zLgOLi98H3fifZn+44m+umXrS52loVEgC2AApnigrVQ=
 github.com/google/go-querystring v0.0.0-20170111101155-53e6ce116135 h1:zLTLjkaOFEFIOxY5BWLFLwh+cL8vOBW4XJ2aqLE/Tf0=
 github.com/google/go-querystring v0.0.0-20170111101155-53e6ce116135/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
+github.com/google/go-querystring v1.0.0 h1:Xkwi/a1rcvNg1PPYe5vI8GbeBY/jrVuDX5ASuANWTrk=
+github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=

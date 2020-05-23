@@ -7,6 +7,7 @@ require (
 	github.com/andygrunwald/go-jira v1.12.0
 	github.com/bluele/slack v0.0.0-20180528010058-b4b4d354a079
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
+	github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/fuyufjh/splunk-hec-go v0.3.3
 	github.com/go-ole/go-ole v1.2.4 // indirect
