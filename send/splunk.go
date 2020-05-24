@@ -1,15 +1,14 @@
 package send
 
 import (
-	"context"
 	"crypto/tls"
 	"net/http"
 	"os"
 	"time"
 
-	hec "github.com/fuyufjh/splunk-hec-go"
 	"github.com/deciduosity/grip/level"
 	"github.com/deciduosity/grip/message"
+	hec "github.com/fuyufjh/splunk-hec-go"
 	"github.com/pkg/errors"
 )
 
@@ -91,8 +90,6 @@ func (s *splunkLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *splunkLogger) Flush(_ context.Context) error { return nil }
 
 // NewSplunkLogger constructs a new Sender implementation that sends
 // messages to a Splunk event collector using the credentials specified

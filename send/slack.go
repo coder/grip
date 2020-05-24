@@ -1,7 +1,6 @@
 package send
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -103,8 +102,6 @@ func (s *slackJournal) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *slackJournal) Flush(_ context.Context) error { return nil }
 
 // SlackOptions configures the behavior for constructing messages sent
 // to slack.

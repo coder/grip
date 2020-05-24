@@ -124,8 +124,6 @@ func (j *jiraJournal) Send(m message.Composer) {
 	}
 }
 
-func (j *jiraJournal) Flush(_ context.Context) error { return nil }
-
 // Validate inspects the contents of JiraOptions struct and returns an error in case of
 // missing any required fields.
 func (o *JiraOptions) Validate() error {

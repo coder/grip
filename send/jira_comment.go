@@ -82,5 +82,3 @@ func (j *jiraCommentJournal) Send(m message.Composer) {
 		}
 	}
 }
-
-func (j *jiraCommentJournal) Flush(_ context.Context) error { return nil }

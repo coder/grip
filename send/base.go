@@ -1,6 +1,7 @@
 package send
 
 import (
+	"context"
 	"fmt"
 	"sync"
 
@@ -162,3 +163,7 @@ func (b *Base) Level() LevelInfo {
 
 	return b.level
 }
+
+// Flush provides a default implementation of the Flush method for
+// senders that don't cache messages locally.
+func (b *Base) Flush(ctx context.Context) error { return nil }

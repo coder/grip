@@ -1,7 +1,6 @@
 package send
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -151,8 +150,6 @@ func (s *xmppLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *xmppLogger) Flush(_ context.Context) error { return nil }
 
 ////////////////////////////////////////////////////////////////////////
 //

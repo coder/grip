@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/github"
 	"github.com/deciduosity/grip/message"
+	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
@@ -75,8 +75,6 @@ func (s *githubLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *githubLogger) Flush(_ context.Context) error { return nil }
 
 //////////////////////////////////////////////////////////////////////////
 //

@@ -2,7 +2,6 @@ package send
 
 import (
 	"bytes"
-	"context"
 	"crypto/tls"
 	"encoding/base64"
 	"errors"
@@ -76,8 +75,6 @@ func (s *smtpLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *smtpLogger) Flush(_ context.Context) error { return nil }
 
 ///////////////////////////////////////////////////////////////////////////
 //

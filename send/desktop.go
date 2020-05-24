@@ -1,8 +1,6 @@
 package send
 
 import (
-	"context"
-
 	"github.com/deciduosity/grip/level"
 	"github.com/deciduosity/grip/message"
 	"github.com/gen2brain/beeep"
@@ -37,8 +35,6 @@ func MakeDesktopNotify(name string) (Sender, error) {
 
 	return s, nil
 }
-
-func (s *desktopNotify) Flush(_ context.Context) error { return nil }
 
 func (s *desktopNotify) Send(m message.Composer) {
 	if s.Level().ShouldLog(m) {

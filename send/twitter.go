@@ -75,8 +75,6 @@ func NewTwitterLogger(ctx context.Context, opts *TwitterOptions, l LevelInfo) (S
 	return s, nil
 }
 
-func (s *twitterLogger) Flush(_ context.Context) error { return nil }
-
 func (s *twitterLogger) Send(m message.Composer) {
 	if s.Level().ShouldLog(m) {
 		if err := s.twitter.Send(m.String()); err != nil {

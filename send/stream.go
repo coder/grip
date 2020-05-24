@@ -1,7 +1,6 @@
 package send
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -61,5 +60,3 @@ func (s *streamLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *streamLogger) Flush(_ context.Context) error { return nil }

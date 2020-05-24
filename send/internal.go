@@ -1,7 +1,6 @@
 package send
 
 import (
-	"context"
 	"sync"
 
 	"github.com/deciduosity/grip/level"
@@ -103,5 +102,3 @@ func (s *InternalSender) Send(m message.Composer) {
 		Logged:   s.Level().ShouldLog(m),
 	}
 }
-
-func (s *InternalSender) Flush(_ context.Context) error { return nil }

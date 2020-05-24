@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/github"
 	"github.com/deciduosity/grip/message"
+	"github.com/google/go-github/github"
 )
 
 type githubCommentLogger struct {
@@ -70,5 +70,3 @@ func (s *githubCommentLogger) Send(m message.Composer) {
 		}
 	}
 }
-
-func (s *githubCommentLogger) Flush(_ context.Context) error { return nil }
