@@ -10,6 +10,7 @@ require (
 	github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/fuyufjh/splunk-hec-go v0.3.3
+	github.com/gen2brain/beeep v0.0.0-20200420150314-13046a26d502
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/mattn/go-xmpp v0.0.0-20200309091041-899ef71e80d2
