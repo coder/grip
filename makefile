@@ -1,8 +1,8 @@
 # project configuration
 name := grip
 buildDir := build
-packages := recovery logging message send slogger $(name)
-orgPath := github.com/mongodb
+packages := recovery logging message send $(name)
+orgPath := github.com/deciduosity
 projectPath := $(orgPath)/$(name)
 # end project configuration
 
