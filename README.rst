@@ -17,13 +17,12 @@ Grip is a high level
 Use
 ---
 
-Download: ::
+``grip`` declares its dependencies via go modules. The top level ``grip``
+package provides global logging functions that use a global logging
+interface. You can also use the logging package to produce logger objects with
+the same interface to avoid relying on a global logger.
 
-   go get -u github.com/deciduosity/grip
-
-Import: ::
-
-   import "github.com/deduosity/grip"
+Grip is available under the terms of the Apache License (v2.) 
 
 Design
 ------
@@ -59,6 +58,9 @@ Goals
 Development
 -----------
 
+Future Work
+~~~~~~~~~~~
+
 Grip is relatively stable, though there are additional features and areas of
 development: 
 
@@ -75,6 +77,17 @@ development:
   
 If you encounter a problem please feel free to create a github issue or open a
 pull request.
+
+History
+~~~~~~~
+
+Grip originated as a personal project, and became the default logging and
+messaging tool for `Evergreen <https://github.com/evergreen-ci/>`_ and related
+projects at MongoDB's release infrastructure developer productivity
+organization. 
+
+This fork removes some legacy components and drops support older versions of
+Golang, thereby adding support for modules.
 
 Features
 --------
