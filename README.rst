@@ -2,7 +2,11 @@
 ``grip`` -- A Golang Logging Library
 ====================================
 
-Grip is a high level 
+Overview
+--------
+
+Grip is a high level logging and message system for providing a single
+solution for structured logging, notification, and message sending.
 
 #. Provide a common logging interface with support for multiple
    output/messaging backends.
@@ -22,7 +26,7 @@ package provides global logging functions that use a global logging
 interface. You can also use the logging package to produce logger objects with
 the same interface to avoid relying on a global logger.
 
-Grip is available under the terms of the Apache License (v2.) 
+Grip is available under the terms of the Apache License (v2.)
 
 Design
 ------
@@ -30,17 +34,17 @@ Design
 Interface
 ~~~~~~~~~
 
-Grip provides three main interfaces: 
+Grip provides three main interfaces:
 
 - The ``send.Sender`` interfaces which implements sending messages to various
   output sources. Provides sending as well as the ability to support error
   handling, and message formating support.
 
 - The ``message.Composer`` which wraps messages providing both "string"
-  formating as well as a "raw" serialized approach. 
+  formating as well as a "raw" serialized approach.
 
 - The ``grip.Journaler`` interface provides a high level logging interface,
-  and is mirrored in the package's public interface as a defult logger. 
+  and is mirrored in the package's public interface as a defult logger.
 
 Goals
 ~~~~~
@@ -62,7 +66,7 @@ Future Work
 ~~~~~~~~~~~
 
 Grip is relatively stable, though there are additional features and areas of
-development: 
+development:
 
 - structured metrics collection. This involves adding a new interface as a
   superset of the Composer interface, and providing ways of filtering these
@@ -74,7 +78,7 @@ development:
 
 - better integration with recent development in error wrapping in the go
   standard library.
-  
+
 If you encounter a problem please feel free to create a github issue or open a
 pull request.
 
@@ -84,7 +88,7 @@ History
 Grip originated as a personal project, and became the default logging and
 messaging tool for `Evergreen <https://github.com/evergreen-ci/>`_ and related
 projects at MongoDB's release infrastructure developer productivity
-organization. 
+organization.
 
 This fork removes some legacy components and drops support older versions of
 Golang, thereby adding support for modules.
@@ -106,9 +110,9 @@ Grip supports a number of different logging output backends:
 - creating or commeting on a jira ticket
 - creating or commenting on a github issue
 - sending a desktop notification
-- sending an email. 
+- sending an email.
 - sending log output.
-- create a tweet.  
+- create a tweet.
 
 See the documentation of the `Sender interface
 <https://godoc.org/github.com/tychoish/grip/send#Sender>`_ for more
@@ -117,12 +121,12 @@ information on building new senders. The `base sender implementation
 the interface, except for the Send method.
 
 In addition to a collection of useful output implementations, grip also
-provides tools for managing output including: 
+provides tools for managing output including:
 
 - the `multi sender
   <https://godoc.org/github.com/deciduosity/grip/send#NewConfiguredMultiSender>`_
   for combining multiple senders to "tee" the output together,
-  
+
 - the `buffering sender
   <https://godoc.org/github.com/deciduosity/grip/send#NewBufferedSender>`_ for
   wrapping a sender with a buffer that will batch messages after reciving a
@@ -189,19 +193,19 @@ want to abort after an error, the `Catcher Interface
 way of aggregating errors. Consider: ::
 
    func doStuff(dirname string) (error) {
-           files, err := ioutil.ReadDir(dirname)
-           if err != nil {
-                   // should abort here because we shouldn't continue.
-                   return err
-           }
+	   files, err := ioutil.ReadDir(dirname)
+	   if err != nil {
+		   // should abort here because we shouldn't continue.
+		   return err
+	   }
 
-           catcher := grip.NewCatcher()t
-           for _, f := range files {
-               err = doStuffToFile(f.Name())
-               catcher.Add(err)
-           }
+	   catcher := grip.NewCatcher()t
+	   for _, f := range files {
+	       err = doStuffToFile(f.Name())
+	       catcher.Add(err)
+	   }
 
-           return catcher.Resolve()
+	   return catcher.Resolve()
    }
 
 Grip provides several error catchers (which are independent of the logging
