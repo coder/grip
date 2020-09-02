@@ -5,6 +5,11 @@ import (
 	"github.com/deciduosity/grip/send"
 )
 
+// The base type for all Journaling methods provided by the Grip
+// package. The package logger uses systemd logging on Linux, when
+// possible, falling back to standard output-native when systemd
+// logging is not available.
+
 // Journaler describes the public interface of the the Grip
 // interface. Used to enforce consistency between the grip and logging
 // packages.

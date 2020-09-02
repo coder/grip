@@ -2,6 +2,7 @@ package grip
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/deciduosity/grip/level"
@@ -227,4 +228,74 @@ func (s *LoggingMethodSuite) TestProgramaticLevelMethods() {
 		s.Equal(lgrMsg.Rendered, stdMsg.Rendered,
 			fmt.Sprintf("%s: \n\tlogger: %+v \n\tstandard: %+v", kind, lgrMsg, stdMsg))
 	}
+}
+
+type GripSuite struct {
+	grip Journaler
+	name string
+	suite.Suite
+}
+
+func TestGripSuite(t *testing.T) {
+	suite.Run(t, new(GripSuite))
+}
+
+func (s *GripSuite) SetupSuite() {
+	s.grip = NewJournaler(s.name)
+	s.Equal(s.grip.Name(), s.name)
+}
+
+func (s *GripSuite) SetupTest() {
+	s.grip.SetName(s.name)
+	sender, err := send.NewNativeLogger(s.name, s.grip.GetSender().Level())
+	s.NoError(err)
+	s.NoError(s.grip.SetSender(sender))
+}
+
+func (s *GripSuite) TestDefaultJournalerIsBootstrap() {
+	firstName := s.grip.Name()
+	// the bootstrap sender is a bit special because you can't
+	// change it's name, therefore:
+	secondName := "something_else"
+	s.grip.SetName(secondName)
+
+	s.Equal(s.grip.Name(), secondName)
+	s.NotEqual(s.grip.Name(), firstName)
+	s.NotEqual(firstName, secondName)
+}
+
+func (s *GripSuite) TestNameSetterAndGetter() {
+	for _, name := range []string{"a", "a39df", "a@)(*E)"} {
+		s.grip.SetName(name)
+		s.Equal(s.grip.Name(), name)
+	}
+}
+
+func (s *GripSuite) TestSenderGetterReturnsExpectedJournaler() {
+	grip := NewJournaler("sender_swap")
+	s.Equal(grip.Name(), "sender_swap")
+
+	sender, err := send.NewNativeLogger(grip.Name(), grip.GetSender().Level())
+	s.NoError(err)
+	s.NoError(grip.SetSender(sender))
+
+	s.Equal(grip.Name(), "sender_swap")
+	ns, _ := send.NewNativeLogger("native_sender", s.grip.GetSender().Level())
+	defer ns.Close()
+	s.IsType(grip.GetSender(), ns)
+
+	sender, err = send.NewFileLogger(grip.Name(), "foo", grip.GetSender().Level())
+	s.NoError(grip.SetSender(sender))
+	s.NoError(err)
+
+	defer func() { std.Error(os.Remove("foo")) }()
+
+	s.Equal(grip.Name(), "sender_swap")
+	s.NotEqual(grip.GetSender(), ns)
+	fs, _ := send.NewFileLogger("file_sender", "foo", s.grip.GetSender().Level())
+	defer fs.Close()
+	s.IsType(grip.GetSender(), fs)
+
+	s.Error(grip.SetSender(nil))
+
 }
