@@ -96,14 +96,14 @@ func NewSimpleFieldsMessage(p level.Priority, msg string, f Fields) Composer {
 	return m
 }
 
-// GetDefualtFieldsMessage returns a "short" message form, to avoid
+// GetDefaultFieldsMessage returns a "short" message form, to avoid
 // needing to call .String() on the type, which produces a string form
 // of the message. If the message has a short form (either in the map,
 // or separate), it's returned, otherwise the "val" is returned.
 //
 // For composers not that don't wrap Fields, this function will always
 // return the input value.
-func GetDefualtFieldsMessage(msg Composer, val string) string {
+func GetDefaultFieldsMessage(msg Composer, val string) string {
 	switch fields := msg.(type) {
 	case *fieldMessage:
 		if fields.message != "" {
