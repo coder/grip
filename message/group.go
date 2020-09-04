@@ -49,7 +49,6 @@ func (g *GroupComposer) String() string {
 
 	if len(g.messages) == 1 && g.messages[0].Loggable() {
 		return g.messages[0].String()
-
 	}
 
 	out := []string{}

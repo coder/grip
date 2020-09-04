@@ -24,7 +24,6 @@ package message
 import (
 	"fmt"
 	"go/build"
-	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -37,7 +36,7 @@ const maxLevels = 1024
 
 type stackMessage struct {
 	Composer
-	trace stackFrames
+	trace StackFrames
 }
 
 // StackFrame captures a single item in a stack trace, and is used
@@ -51,7 +50,7 @@ type StackFrame struct {
 // StackTrace structs are returned by the Raw method of the stackMessage type
 type StackTrace struct {
 	Context interface{} `bson:"context,omitempty" json:"context,omitempty" yaml:"context,omitempty"`
-	Frames  stackFrames `bson:"frames" json:"frames" yaml:"frames"`
+	Frames  StackFrames `bson:"frames" json:"frames" yaml:"frames"`
 }
 
 func (s StackTrace) String() string { return s.Frames.String() }
@@ -116,7 +115,7 @@ func (m *stackMessage) Raw() interface{} {
 	switch payload := m.Composer.(type) {
 	case *fieldMessage:
 		payload.fields["stack.frames"] = m.trace
-		return payload
+		return payload.fields
 	default:
 		return StackTrace{
 			Context: payload,
@@ -131,9 +130,10 @@ func (m *stackMessage) Raw() interface{} {
 //
 ////////////////////////////////////////////////////////////////////////
 
-type stackFrames []StackFrame
+// StackFrames makes slices of stack traces printable.
+type StackFrames []StackFrame
 
-func (f stackFrames) String() string {
+func (f StackFrames) String() string {
 	out := make([]string, len(f))
 	for idx, frame := range f {
 		out[idx] = frame.String()
@@ -143,33 +143,24 @@ func (f stackFrames) String() string {
 }
 
 func (f StackFrame) String() string {
-	if strings.HasPrefix(f.File, build.Default.GOPATH) {
-		funcNameParts := strings.Split(f.Function, ".")
-		var fname string
-		if len(funcNameParts) > 0 {
-			fname = funcNameParts[len(funcNameParts)-1]
-		} else {
-			fname = f.Function
-
-		}
-
-		return fmt.Sprintf("%s:%d (%s)",
-			f.File[len(build.Default.GOPATH)+5:],
-			f.Line,
-			fname)
-	}
-
 	if strings.HasPrefix(f.File, build.Default.GOROOT) {
 		return fmt.Sprintf("%s:%d",
 			f.File[len(build.Default.GOROOT)+5:],
 			f.Line)
 	}
 
-	dir, fileName := filepath.Split(f.File)
+	funcNameParts := strings.Split(f.Function, ".")
+	var fname string
+	if len(funcNameParts) > 0 {
+		fname = funcNameParts[len(funcNameParts)-1]
+	} else {
+		fname = f.Function
+	}
 
-	return fmt.Sprintf("%s:%d",
-		filepath.Join(filepath.Base(dir), fileName),
-		f.Line)
+	return fmt.Sprintf("%s:%d (%s)",
+		f.File[len(build.Default.GOPATH)+5:],
+		f.Line,
+		fname)
 }
 
 func captureStack(skip int) []StackFrame {

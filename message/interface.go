@@ -1,6 +1,8 @@
 package message
 
-import "github.com/deciduosity/grip/level"
+import (
+	"github.com/deciduosity/grip/level"
+)
 
 // Composer defines an interface with a "String()" method that
 // returns the message in string format. Objects that implement this
@@ -108,5 +110,45 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		return NewLineMessage(p)
 	default:
 		return NewFormattedMessage(p, "%+v", message)
+	}
+}
+
+// IsStructured returns false if the Composer has a string form which
+// is merely a representation of the structured form.
+//
+// Additionally, returns true for all unknown types, including all types not
+// produced by this package.
+func IsStructured(msg Composer) bool {
+	switch msg.(type) {
+	case *stringMessage:
+		return false
+	case *formatMessenger:
+		return false
+	case *lineMessenger:
+		return false
+	case *bytesMessage:
+		return false
+	case *SystemInfo:
+		return true
+	case *ProcessInfo:
+		return true
+	case *GoRuntimeInfo:
+		return true
+	case *jiraMessage:
+		return true
+	case *jiraComment:
+		return false
+	case *githubStatusMessage:
+		return true
+	case *errorMessage:
+		return true
+	case *emailMessage:
+		return true
+	case *fieldMessage:
+		return true
+	case *GroupComposer:
+		return true
+	default:
+		return true
 	}
 }
