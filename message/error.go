@@ -69,6 +69,7 @@ func (e *errorMessage) Raw() interface{} {
 
 func (e *errorMessage) Error() string { return e.String() }
 func (e *errorMessage) Cause() error  { return e.err }
+func (e *errorMessage) Unwrap() error { return e.err }
 func (e *errorMessage) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':

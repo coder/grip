@@ -75,10 +75,16 @@ func (l LevelInfo) Valid() bool { return l.Default.IsValid() && l.Threshold.IsVa
 // ShouldLog checks to see if the log message should be logged, and returns
 // false if there is no message or if the message's priority is below the
 // logging threshold.
+//
+// This calls the messages' Loggable method.
 func (l LevelInfo) ShouldLog(m message.Composer) bool {
 	// priorities are 0 = Emergency; 7 = debug
-	return m.Loggable() && (m.Priority() >= l.Threshold)
+	return m.Loggable() && l.Loggable(m.Priority())
 }
+
+// Loggable returns true only when passed an argument that is equal to
+// or greater than the threshold.
+func (l LevelInfo) Loggable(p level.Priority) bool { return p >= l.Threshold }
 
 func setup(s Sender, name string, l LevelInfo) (Sender, error) {
 	if err := s.SetLevel(l); err != nil {

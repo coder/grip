@@ -68,6 +68,7 @@ func (m *errorComposerWrap) String() string {
 
 func (m *errorComposerWrap) Error() string { return m.String() }
 func (m *errorComposerWrap) Cause() error  { return m.err }
+func (m *errorComposerWrap) Unwrap() error { return m.err }
 func (m *errorComposerWrap) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':

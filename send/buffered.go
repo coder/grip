@@ -57,7 +57,7 @@ func NewBufferedSender(sender Sender, interval time.Duration, size int) Sender {
 }
 
 func (s *bufferedSender) Send(msg message.Composer) {
-	if !s.Level().ShouldLog(msg) {
+	if !s.Level().Loggable(msg.Priority()) {
 		return
 	}
 
