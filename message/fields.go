@@ -47,23 +47,6 @@ func NewFields(p level.Priority, f Fields) Composer {
 	return m
 }
 
-// MakeFieldsMessage constructs a fields Composer from a message string and
-// Fields object, without specifying the priority of the message.
-func MakeFieldsMessage(message string, f Fields) Composer {
-	m := &fieldMessage{message: message, fields: f}
-	m.setup()
-
-	return m
-}
-
-// MakeSimpleFields returns a structured Composer that does
-// not attach basic logging metadata.
-func MakeSimpleFields(f Fields) Composer {
-	m := &fieldMessage{fields: f, skipMetadata: true}
-	m.setup()
-	return m
-}
-
 // NewSimpleFields returns a structured Composer that does not
 // attach basic logging metadata and allows callers to configure the
 // messages' log level.
@@ -93,6 +76,29 @@ func MakeSimpleFieldsMessage(msg string, f Fields) Composer {
 func NewSimpleFieldsMessage(p level.Priority, msg string, f Fields) Composer {
 	m := MakeSimpleFieldsMessage(msg, f)
 	_ = m.SetPriority(p)
+	return m
+}
+
+// MakeFields creates a composer interface from *just* a Fields instance.
+func MakeFields(f Fields) Composer {
+	m := &fieldMessage{fields: f}
+	m.setup()
+	return m
+}
+
+// MakeFieldsMessage constructs a fields Composer from a message string and
+// Fields object, without specifying the priority of the message.
+func MakeFieldsMessage(message string, f Fields) Composer {
+	m := &fieldMessage{message: message, fields: f}
+	m.setup()
+	return m
+}
+
+// MakeSimpleFields returns a structured Composer that does
+// not attach basic logging metadata.
+func MakeSimpleFields(f Fields) Composer {
+	m := &fieldMessage{fields: f, skipMetadata: true}
+	m.setup()
 	return m
 }
 
@@ -130,6 +136,10 @@ func GetDefaultFieldsMessage(msg Composer, val string) string {
 ////////////////////////////////////////////////////////////////////////
 
 func (m *fieldMessage) setup() {
+	if m.fields == nil {
+		m.fields = Fields{}
+	}
+
 	if _, ok := m.fields[FieldsMsgName]; !ok && m.message != "" {
 		m.fields[FieldsMsgName] = m.message
 	}
@@ -145,13 +155,6 @@ func (m *fieldMessage) setup() {
 	} else if _, ok = b.(*Base); ok {
 		m.fields["metadata"] = &m.Base
 	}
-}
-
-// MakeFields creates a composer interface from *just* a Fields instance.
-func MakeFields(f Fields) Composer {
-	m := &fieldMessage{fields: f}
-	m.setup()
-	return m
 }
 
 func (m *fieldMessage) Loggable() bool {

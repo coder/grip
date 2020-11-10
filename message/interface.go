@@ -68,6 +68,18 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		return NewDefaultMessage(p, message)
 	case error:
 		return NewErrorMessage(p, message)
+	case FieldsProducer:
+		return NewFieldsProducerMessage(p, message)
+	case func() Fields:
+		return NewFieldsProducerMessage(p, message)
+	case ComposerProducer:
+		return NewComposerProducerMessage(p, message)
+	case func() Composer:
+		return NewComposerProducerMessage(p, message)
+	case ErrorProducer:
+		return NewErrorProducerMessage(p, message)
+	case func() error:
+		return NewErrorProducerMessage(p, message)
 	case []string:
 		return newLinesFromStrings(p, message)
 	case []interface{}:
@@ -83,15 +95,13 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		for idx := range message {
 			grp[idx] = newLinesFromStrings(p, message[idx])
 		}
-		out := NewGroupComposer(grp)
-		return out
+		return NewGroupComposer(grp)
 	case [][]byte:
 		grp := make([]Composer, len(message))
 		for idx := range message {
 			grp[idx] = NewBytesMessage(p, message[idx])
 		}
-		out := NewGroupComposer(grp)
-		return out
+		return NewGroupComposer(grp)
 	case []map[string]interface{}:
 		grp := make([]Composer, len(message))
 		for idx := range message {
@@ -106,6 +116,42 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		}
 		out := NewGroupComposer(grp)
 		return out
+	case []FieldsProducer:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewFieldsProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []func() Fields:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewFieldsProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []ComposerProducer:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewComposerProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []func() Composer:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewComposerProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []ErrorProducer:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewErrorProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []func() error:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewErrorProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
 	case nil:
 		return NewLineMessage(p)
 	default:
@@ -119,7 +165,7 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 // Additionally, returns true for all unknown types, including all types not
 // produced by this package.
 func IsStructured(msg Composer) bool {
-	switch msg.(type) {
+	switch m := msg.(type) {
 	case *stringMessage:
 		return false
 	case *formatMessenger:
@@ -148,6 +194,17 @@ func IsStructured(msg Composer) bool {
 		return true
 	case *GroupComposer:
 		return true
+	case *fieldsProducerMessage:
+		m.resolve()
+		return IsStructured(m.cached)
+	case *composerProducerMessage:
+		m.resolve()
+		return IsStructured(m.cached)
+	case *errorProducerMessage:
+		m.resolve()
+		return IsStructured(m.cached)
+	case errorComposerShim:
+		return IsStructured(m.Composer)
 	default:
 		return true
 	}
