@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
-	github.com/andygrunwald/go-jira v1.12.0
+	github.com/andygrunwald/go-jira v1.13.0
 	github.com/bluele/slack v0.0.0-20180528010058-b4b4d354a079
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
 	github.com/dghubble/go-twitter v0.0.0-20190719072343-39e5462e111f
