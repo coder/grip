@@ -5,9 +5,9 @@ import (
 	"os"
 	"sync"
 
-	"github.com/deciduosity/grip/level"
-	"github.com/deciduosity/grip/message"
-	"github.com/deciduosity/grip/send"
+	"github.com/cdr/grip/level"
+	"github.com/cdr/grip/message"
+	"github.com/cdr/grip/send"
 )
 
 // Grip provides the core implementation of the Logging interface. The

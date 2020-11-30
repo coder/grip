@@ -3,7 +3,7 @@ package message
 import (
 	"fmt"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 type formatMessenger struct {

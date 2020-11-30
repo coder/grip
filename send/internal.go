@@ -3,8 +3,8 @@ package send
 import (
 	"sync"
 
-	"github.com/deciduosity/grip/level"
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/level"
+	"github.com/cdr/grip/message"
 )
 
 // InternalSender implements a Sender object that makes it possible to

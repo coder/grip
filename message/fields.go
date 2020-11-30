@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 // FieldsMsgName is the name of the default "message" field in the

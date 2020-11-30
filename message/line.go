@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 type lineMessenger struct {

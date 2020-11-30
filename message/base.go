@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 // Base provides a simple embedable implementation of some common

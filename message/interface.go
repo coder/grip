@@ -1,7 +1,7 @@
 package message
 
 import (
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 // Composer defines an interface with a "String()" method that

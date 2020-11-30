@@ -14,7 +14,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/message"
 )
 
 type smtpLogger struct {

@@ -27,7 +27,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 const maxLevels = 1024

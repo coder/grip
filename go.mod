@@ -1,4 +1,4 @@
-module github.com/deciduosity/grip
+module github.com/cdr/grip
 
 go 1.14
 

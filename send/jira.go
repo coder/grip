@@ -12,8 +12,8 @@ import (
 	"strings"
 
 	jira "github.com/andygrunwald/go-jira"
-	"github.com/deciduosity/grip/level"
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/level"
+	"github.com/cdr/grip/message"
 	"github.com/dghubble/oauth1"
 	"github.com/pkg/errors"
 	"github.com/trivago/tgo/tcontainer"

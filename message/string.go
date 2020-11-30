@@ -1,6 +1,6 @@
 package message
 
-import "github.com/deciduosity/grip/level"
+import "github.com/cdr/grip/level"
 
 type stringMessage struct {
 	Message string `bson:"message" json:"message" yaml:"message"`

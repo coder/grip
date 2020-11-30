@@ -1,7 +1,7 @@
 package message
 
 import (
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 )
 
 type condComposer struct {

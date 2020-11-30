@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/deciduosity/grip/level"
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/level"
+	"github.com/cdr/grip/message"
 )
 
 type jiraCommentJournal struct {

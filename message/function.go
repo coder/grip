@@ -36,7 +36,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/deciduosity/grip/level"
+	"github.com/cdr/grip/level"
 	"github.com/pkg/errors"
 )
 

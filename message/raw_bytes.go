@@ -3,7 +3,7 @@
 // The bytes types make it possible to send a byte slice as a message.
 package message
 
-import "github.com/deciduosity/grip/level"
+import "github.com/cdr/grip/level"
 
 type bytesMessage struct {
 	data         []byte

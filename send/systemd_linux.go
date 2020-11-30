@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/coreos/go-systemd/journal"
-	"github.com/deciduosity/grip/level"
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/level"
+	"github.com/cdr/grip/message"
 )
 
 type systemdJournal struct {

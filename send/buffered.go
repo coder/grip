@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/deciduosity/grip/message"
+	"github.com/cdr/grip/message"
 )
 
 const minInterval = 5 * time.Second
