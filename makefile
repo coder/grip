@@ -2,7 +2,7 @@
 name := grip
 buildDir := build
 packages := recovery logging message send $(name)
-orgPath := github.com/deciduosity
+orgPath := github.com/cdr
 projectPath := $(orgPath)/$(name)
 # end project configuration
 
