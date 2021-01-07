@@ -34,7 +34,7 @@ func TestTwitter(t *testing.T) {
 
 	t.Run("Constructors", func(t *testing.T) {
 		t.Run("NilCredentialsPanic", func(t *testing.T) {
-			assert.Panics(t, func() { MakeTwitterLogger(ctx, nil) })
+			assert.Panics(t, func() { _, _ = MakeTwitterLogger(ctx, nil) })
 		})
 		t.Run("EmptyCredentialsError", func(t *testing.T) {
 			s, err := MakeTwitterLogger(ctx, &TwitterOptions{})
@@ -65,7 +65,7 @@ func TestTwitter(t *testing.T) {
 			errsender, err := NewInternalLogger("errr", LevelInfo{level.Info, level.Info})
 			require.NoError(t, err)
 			s := newMockedTwitterSender(mock)
-			s.SetErrorHandler(ErrorHandlerFromSender(errsender))
+			require.NoError(t, s.SetErrorHandler(ErrorHandlerFromSender(errsender)))
 			mock.SendError = errors.New("sendERROR")
 
 			msg := message.NewSimpleStringMessage(level.Info, "hi")
@@ -84,7 +84,7 @@ func TestTwitter(t *testing.T) {
 			Base:    NewBase("fake"),
 		}
 
-		s.SetErrorHandler(ErrorHandlerFromSender(errsender))
+		require.NoError(t, s.SetErrorHandler(ErrorHandlerFromSender(errsender)))
 
 		msg := message.NewSimpleStringMessage(level.Info, "hi")
 		s.Send(msg)
