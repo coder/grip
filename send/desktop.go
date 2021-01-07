@@ -39,9 +39,13 @@ func MakeDesktopNotify(name string) (Sender, error) {
 func (s *desktopNotify) Send(m message.Composer) {
 	if s.Level().ShouldLog(m) {
 		if m.Priority() >= level.Critical {
-			beeep.Alert(s.Name(), m.String(), "")
+			if err := beeep.Alert(s.Name(), m.String(), ""); err != nil {
+				s.ErrorHandler()(err, m)
+			}
 		} else {
-			beeep.Notify(s.Name(), m.String(), "")
+			if err := beeep.Notify(s.Name(), m.String(), ""); err != nil {
+				s.ErrorHandler()(err, m)
+			}
 		}
 	}
 }

@@ -188,7 +188,7 @@ func (cp *composerProducerMessage) resolve() {
 		if cp.cached == nil {
 			cp.cached = NewSimpleFields(cp.level, Fields{})
 		} else {
-			cp.cached.SetPriority(cp.level)
+			_ = cp.cached.SetPriority(cp.level)
 		}
 	}
 }
