@@ -82,6 +82,22 @@ func MakeFieldsProducerMessage(fp FieldsProducer) Composer {
 	return &fieldsProducerMessage{fp: fp}
 }
 
+// MakeConvertedFieldsProducer converts a generic map to a fields
+// producer, as the message types are equivalent.
+func MakeConvertedFieldsProducer(mp func() map[string]interface{}) Composer {
+	return MakeFieldsProducerMessage(func() Fields {
+		return mp()
+	})
+}
+
+// NewConvertedFieldsProducer converts a generic map to a fields
+// producer at the specified priority, as the message types are equivalent,
+func NewConvertedFieldsProducer(p level.Priority, mp func() map[string]interface{}) Composer {
+	return NewFieldsProducerMessage(p, func() Fields {
+		return mp()
+	})
+}
+
 func (fp *fieldsProducerMessage) resolve() {
 	if fp.cached == nil {
 		if fp.fp == nil {

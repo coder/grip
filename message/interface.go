@@ -76,6 +76,8 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		return NewComposerProducerMessage(p, message)
 	case func() Composer:
 		return NewComposerProducerMessage(p, message)
+	case func() map[string]interface{}:
+		return NewConvertedFieldsProducer(p, message)
 	case ErrorProducer:
 		return NewErrorProducerMessage(p, message)
 	case func() error:
@@ -126,6 +128,12 @@ func convert(p level.Priority, message interface{}, overRideLevel bool) Composer
 		grp := make([]Composer, len(message))
 		for idx := range message {
 			grp[idx] = NewFieldsProducerMessage(p, message[idx])
+		}
+		return NewGroupComposer(grp)
+	case []func() map[string]interface{}:
+		grp := make([]Composer, len(message))
+		for idx := range message {
+			grp[idx] = NewConvertedFieldsProducer(p, message[idx])
 		}
 		return NewGroupComposer(grp)
 	case []ComposerProducer:

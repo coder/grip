@@ -69,7 +69,7 @@ func MakeCallSiteFormatter(depth int) MessageFormatter {
 	}
 }
 
-//MakeXMPPFormatter returns a MessageFormatter that will produce
+// MakeXMPPFormatter returns a MessageFormatter that will produce
 // messages in the following format, used primarily by the xmpp logger:
 //
 //     [<name>] (p=<priority>) <message>

@@ -145,7 +145,7 @@ func (f StackFrames) String() string {
 func (f StackFrame) String() string {
 	if strings.HasPrefix(f.File, build.Default.GOROOT) {
 		return fmt.Sprintf("%s:%d",
-			f.File[len(build.Default.GOROOT)+5:],
+			f.File[len(build.Default.GOROOT):],
 			f.Line)
 	}
 
@@ -158,7 +158,7 @@ func (f StackFrame) String() string {
 	}
 
 	return fmt.Sprintf("%s:%d (%s)",
-		f.File[len(build.Default.GOPATH)+5:],
+		f.File[len(build.Default.GOPATH):],
 		f.Line,
 		fname)
 }

@@ -46,10 +46,52 @@ func TestExtendedTimestampCatcherSuite(t *testing.T) {
 	suite.Run(t, s)
 }
 
+///////////////////////////////////
+//
+// Fixed Size Tests
+
+func TestFixedSizeExtendedCatcherSuite(t *testing.T) {
+	s := new(CatcherSuite)
+	s.size = 100
+	s.reset = func() Catcher { return MakeExtendedCatcher(s.size) }
+	suite.Run(t, s)
+}
+
+func TestFixedSizeBasicCatcherSuite(t *testing.T) {
+	s := new(CatcherSuite)
+	s.size = 100
+	s.reset = func() Catcher { return MakeBasicCatcher(s.size) }
+	suite.Run(t, s)
+}
+
+func TestFixedSizeSimpleCatcherSuite(t *testing.T) {
+	s := new(CatcherSuite)
+	s.size = 100
+	s.reset = func() Catcher { return MakeSimpleCatcher(s.size) }
+	suite.Run(t, s)
+}
+
+func TestFixedSizeTimestampCatcherSuite(t *testing.T) {
+	s := new(CatcherSuite)
+	s.size = 100
+	s.reset = func() Catcher { return MakeTimestampCatcher(s.size) }
+	suite.Run(t, s)
+}
+
+func TestFixedSizeExtendedTimestampCatcherSuite(t *testing.T) {
+	s := new(CatcherSuite)
+	s.size = 100
+	s.reset = func() Catcher { return MakeExtendedTimestampCatcher(s.size) }
+	suite.Run(t, s)
+}
+
+////////////////////////////////////////////////////////////////////////
+
 // CatcherSuite provides
 type CatcherSuite struct {
 	catcher Catcher
 	reset   func() Catcher
+	size    int
 	suite.Suite
 }
 
@@ -64,6 +106,8 @@ func (s *CatcherSuite) TestInitialValuesOfCatcherInterface() {
 }
 
 func (s *CatcherSuite) TestAddMethodImpactsState() {
+	s.requireBatchSize(1)
+
 	err := errors.New("foo")
 
 	s.False(s.catcher.HasErrors())
@@ -88,6 +132,8 @@ func (s *CatcherSuite) TestAddingNilMethodDoesNotImpactCatcherState() {
 }
 
 func (s *CatcherSuite) TestAddingManyErrorsIsCaptured() {
+	s.requireBatchSize(100)
+
 	s.False(s.catcher.HasErrors())
 	s.Equal(0, s.catcher.Len())
 
@@ -117,6 +163,8 @@ func (s *CatcherSuite) TestResolveMethodIsNilIfNotHasErrors() {
 }
 
 func (s *CatcherSuite) TestResolveMethodDoesNotClearStateOfCatcher() {
+	s.requireBatchSize(10)
+
 	s.False(s.catcher.HasErrors())
 	s.Equal(0, s.catcher.Len())
 
@@ -133,20 +181,35 @@ func (s *CatcherSuite) TestResolveMethodDoesNotClearStateOfCatcher() {
 }
 
 func (s *CatcherSuite) TestConcurrentAddingOfErrors() {
+	batchSize := 256
+	if s.size <= batchSize {
+		batchSize = s.size
+
+	}
 	wg := &sync.WaitGroup{}
 	s.Equal(s.catcher.Len(), 0)
-	for i := 0; i < 256; i++ {
+	for i := 0; i < batchSize; i++ {
 		wg.Add(1)
-		func(num int) {
+		go func(num int) {
 			s.catcher.Add(fmt.Errorf("adding err #%d", num))
 			wg.Done()
 		}(i)
 	}
 	wg.Wait()
-	s.Equal(s.catcher.Len(), 256)
+	s.Equal(s.catcher.Len(), batchSize)
+}
+
+func (s *CatcherSuite) requireBatchSize(size int) {
+	if s.size <= 0 {
+		return
+	}
+
+	s.Require().True(s.size >= size, "batch size must be larger than the size of the collector")
 }
 
 func (s *CatcherSuite) TestErrorsAndExtendMethods() {
+	s.requireBatchSize(20)
+
 	for i := 1; i <= 10; i++ {
 		s.catcher.Add(errors.New(strconv.Itoa(i)))
 		s.True(s.catcher.HasErrors())
@@ -168,11 +231,11 @@ func (s *CatcherSuite) TestExtendWithEmptySet() {
 }
 
 func (s *CatcherSuite) TestExtendWithNilErrors() {
+	s.requireBatchSize(1)
 	errs := []error{nil, errors.New("what"), nil}
 	s.Len(errs, 3)
 	s.catcher.Extend(errs)
 	s.Equal(s.catcher.Len(), 1)
-
 }
 
 func (s *CatcherSuite) TestAddWhenNilError() {
@@ -183,6 +246,8 @@ func (s *CatcherSuite) TestAddWhenNilError() {
 }
 
 func (s *CatcherSuite) TestAddWithErrorAndFalse() {
+	s.requireBatchSize(1)
+
 	s.catcher.AddWhen(false, errors.New("f"))
 	s.Equal(s.catcher.Len(), 0)
 	s.catcher.AddWhen(true, errors.New("f"))
@@ -203,6 +268,8 @@ func (s *CatcherSuite) TestExtendWhenNilError() {
 }
 
 func (s *CatcherSuite) TestExtendWithErrorAndFalse() {
+	s.requireBatchSize(3)
+
 	s.catcher.ExtendWhen(false, []error{errors.New("f")})
 	s.Equal(s.catcher.Len(), 0)
 	s.catcher.ExtendWhen(true, []error{errors.New("f")})
@@ -222,6 +289,7 @@ func (s *CatcherSuite) TestNewEmpty() {
 }
 
 func (s *CatcherSuite) TestNewAdd() {
+	s.requireBatchSize(1)
 	s.catcher.New("one")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "one")
@@ -238,6 +306,8 @@ func (s *CatcherSuite) TestWrapFEmpty() {
 }
 
 func (s *CatcherSuite) TestWrapPopulated() {
+	s.requireBatchSize(1)
+
 	s.catcher.Wrap(errors.New("foo"), "bar")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "foo")
@@ -245,6 +315,8 @@ func (s *CatcherSuite) TestWrapPopulated() {
 }
 
 func (s *CatcherSuite) TestWrapfPopulated() {
+	s.requireBatchSize(1)
+
 	s.catcher.Wrapf(errors.New("foo"), "bar: %s", "this")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "foo")
@@ -252,18 +324,22 @@ func (s *CatcherSuite) TestWrapfPopulated() {
 }
 
 func (s *CatcherSuite) TestWrapPopulatedNillAnnotation() {
+	s.requireBatchSize(1)
+
 	s.catcher.Wrap(errors.New("foo"), "")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "foo")
 }
 
 func (s *CatcherSuite) TestWrapfPopulatedNillAnnotation() {
+	s.requireBatchSize(1)
 	s.catcher.Wrapf(errors.New("foo"), "")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "foo")
 }
 
 func (s *CatcherSuite) TestNewWhen() {
+	s.requireBatchSize(1)
 	s.catcher.NewWhen(false, "")
 	s.Equal(s.catcher.Len(), 0)
 	s.catcher.NewWhen(false, "one")
@@ -296,6 +372,7 @@ func (s *CatcherSuite) TestErrorfWhenNilCases() {
 }
 
 func (s *CatcherSuite) TestErrorfNoArgs() {
+	s.requireBatchSize(1)
 	s.catcher.Errorf("%s what")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "%s what")
@@ -311,12 +388,14 @@ func (s *CatcherSuite) TestErrorfWhenNoArgs() {
 }
 
 func (s *CatcherSuite) TestErrorfFull() {
+	s.requireBatchSize(1)
 	s.catcher.Errorf("%s what", "this")
 	s.Equal(s.catcher.Len(), 1)
 	s.Contains(s.catcher.Errors()[0].Error(), "this what")
 }
 
 func (s *CatcherSuite) TestWhenErrorfFull() {
+	s.requireBatchSize(1)
 	s.catcher.ErrorfWhen(false, "%s what", "this")
 	s.Equal(s.catcher.Len(), 0)
 
@@ -326,6 +405,7 @@ func (s *CatcherSuite) TestWhenErrorfFull() {
 }
 
 func (s *CatcherSuite) TestCheckWhenError() {
+	s.requireBatchSize(1)
 	fn := func() error { return errors.New("hi") }
 	s.Error(fn())
 	s.catcher.CheckWhen(false, fn)
@@ -354,16 +434,60 @@ func (s *CatcherSuite) TestCheckExtendNoError() {
 }
 
 func (s *CatcherSuite) TestCheckExtendError() {
+	s.requireBatchSize(3)
 	fn := func() error { return errors.New("hi") }
 	s.catcher.CheckExtend([]CheckFunction{fn, fn, fn})
 	s.Equal(s.catcher.Len(), 3)
 }
 
 func (s *CatcherSuite) TestCheckExtendMixed() {
+	s.requireBatchSize(2)
 	s.catcher.CheckExtend([]CheckFunction{
 		func() error { return errors.New("hi") },
 		func() error { return errors.New("hi") },
 		func() error { return nil },
 	})
 	s.Equal(s.catcher.Len(), 2)
+}
+
+func (s *CatcherSuite) TestCapsRespectedForAdd() {
+	iters := 0
+	for i := 0; i < 2*s.size; i++ {
+		iters++
+		s.catcher.Add(errors.New("abc"))
+	}
+	s.Equal(2*s.size, iters) // sanity check
+
+	if s.size == 0 {
+		s.Equal(s.catcher.Len(), 2*s.size)
+	} else {
+		s.Equal(s.catcher.Len(), s.size)
+	}
+
+}
+
+func (s *CatcherSuite) TestCapsRespectedForExtend() {
+	if s.size <= 0 {
+	}
+
+	errs := make([]error, s.size*2)
+
+	for idx := range errs {
+		errs[idx] = errors.New("abc")
+	}
+
+	s.catcher.Extend(errs)
+	if s.size <= 0 {
+		s.Equal(s.catcher.Len(), 2*s.size)
+	} else {
+		s.Equal(s.catcher.Len(), s.size)
+	}
+
+	s.catcher.Extend(errs)
+
+	if s.size <= 0 {
+		s.Equal(s.catcher.Len(), 4*s.size)
+	} else {
+		s.Equal(s.catcher.Len(), s.size)
+	}
 }

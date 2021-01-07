@@ -52,6 +52,7 @@ func TestPopulatedMessageComposerConstructors(t *testing.T) {
 		MakeErrorProducerMessage(func() error { return errors.New(testMsg) }):                  testMsg,
 		NewErrorProducerMessage(level.Error, func() error { return errors.New(testMsg) }):      testMsg,
 		NewFieldsProducerMessage(level.Error, func() Fields { return Fields{"pro": "ducer"} }): "[pro='ducer']",
+		NewConvertedFieldsProducer(level.Error, func() map[string]interface{} { return map[string]interface{}{"pro": "ducer"} }): "[pro='ducer']",
 		NewEmailMessage(level.Error, Email{
 			Recipients: []string{"someone@example.com"},
 			Subject:    "Test msg",
@@ -59,10 +60,9 @@ func TestPopulatedMessageComposerConstructors(t *testing.T) {
 		}): fmt.Sprintf("To: someone@example.com; Body: %s", testMsg),
 		NewGithubStatusMessage(level.Error, "tests", GithubStateError, "https://example.com", testMsg): fmt.Sprintf("tests error: %s (https://example.com)", testMsg),
 		NewGithubStatusMessageWithRepo(level.Error, GithubStatus{
-			Owner: "cdr",
-			Repo:  "grip",
-			Ref:   "master",
-
+			Owner:       "cdr",
+			Repo:        "grip",
+			Ref:         "master",
 			Context:     "tests",
 			State:       GithubStateError,
 			URL:         "https://example.com",
@@ -320,7 +320,7 @@ func TestStackMessages(t *testing.T) {
 
 		diagMsg := fmt.Sprintf("%T: %+v", msg, msg)
 		assert.True(strings.Contains(msg.String(), text), diagMsg)
-		assert.True(strings.Contains(msg.String(), stackMsg), diagMsg)
+		assert.True(strings.Contains(msg.String(), stackMsg), "%s\n%s\n%s\n", diagMsg, msg.String(), stackMsg)
 	}
 }
 

@@ -8,6 +8,7 @@ import (
 
 	"github.com/cdr/grip/level"
 	"github.com/cdr/grip/logging"
+	"github.com/cdr/grip/message"
 	"github.com/cdr/grip/send"
 )
 
@@ -73,6 +74,25 @@ func SetDefaultJournaler(l Journaler) {
 // Name of the logger instance
 func Name() string {
 	return std.Name()
+}
+
+// MakeCatcherErrorHandler produces an error handler useful for
+// collecting errors from a sender using the supplied error
+// catcher. At the very least, consider using a catcher that has a
+// specified maxsize, and possibly timestamp annotating catcher as
+// well. If you
+func MakeCatcherErrorHandler(catcher Catcher, fallback send.Sender) send.ErrorHandler {
+	return func(err error, m message.Composer) {
+		if err == nil {
+			return
+		}
+
+		catcher.Add(err)
+
+		if fallback != nil {
+			fallback.Send(message.WrapError(err, m))
+		}
+	}
 }
 
 // SetName declare a name string for the logger, including in the logging

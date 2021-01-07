@@ -34,8 +34,7 @@ type CheckFunction func() error
 // errors, the implementations are usually functionally
 // equivalent. The Extended variant formats the errors using the "%+v"
 // (which returns a full stack trace with pkg/errors,) the Simple
-// variant uses %s (which includes all the wrapped context,) and the
-// basic catcher calls error.Error() (which should be equvalent to %s
+// variant uses %s (which includes all the wrapped context,) and the// basic catcher calls error.Error() (which should be equvalent to %s
 // for most error implementations.)
 type Catcher interface {
 	Add(error)
@@ -66,8 +65,9 @@ type Catcher interface {
 // implement a kind of "continue on error"-style operations. The
 // methods on MultiCatatcher are thread-safe.
 type baseCatcher struct {
-	errs  []error
-	mutex sync.RWMutex
+	errs    []error
+	maxSize int
+	mutex   sync.RWMutex
 	fmt.Stringer
 }
 
@@ -81,29 +81,38 @@ func NewCatcher() Catcher { return NewExtendedCatcher() }
 
 // NewBasicCatcher collects error messages and formats them using a
 // new-line separated string of the output of error.Error()
-func NewBasicCatcher() Catcher {
-	c := &baseCatcher{}
-	c.Stringer = &basicCatcher{c}
-	return c
-}
+func NewBasicCatcher() Catcher { return makeBasicCatcher(&baseCatcher{}) }
 
 // NewSimpleCatcher collects error messages and formats them using a
 // new-line separated string of the string format of the error message
 // (e.g. %s).
-func NewSimpleCatcher() Catcher {
-	c := &baseCatcher{}
-	c.Stringer = &simpleCatcher{c}
-	return c
-}
+func NewSimpleCatcher() Catcher { return makeSimpleCatcher(&baseCatcher{}) }
 
 // NewExtendedCatcher collects error messages and formats them using a
 // new-line separated string of the extended string format of the
 // error message (e.g. %+v).
-func NewExtendedCatcher() Catcher {
-	c := &baseCatcher{}
-	c.Stringer = &extendedCatcher{c}
-	return c
-}
+func NewExtendedCatcher() Catcher { return makeExtCatcher(&baseCatcher{}) }
+
+// MakeBasicCatcher collects error messages and formats them using a
+// new-line separated string of the output of error.Error(). If the
+// size greater than 0 the catcher will never collect more than the
+// specified number of errors, discarding earlier messages when adding
+// new messages.
+func MakeBasicCatcher(size int) Catcher { return makeBasicCatcher(&baseCatcher{maxSize: size}) }
+
+// MakeSimpleCatcher collects error messages and formats them using a
+// new-line separated string of the string format of the error message
+// (e.g. %s). If the size greater than 0 the catcher will never
+// collect more than the specified number of errors, discarding
+// earlier messages when adding new messages.
+func MakeSimpleCatcher(size int) Catcher { return makeSimpleCatcher(&baseCatcher{maxSize: size}) }
+
+// MakeExtendedCatcher collects error messages and formats them using
+// a new-line separated string of the extended string format of the
+// error message (e.g. %+v). If the size greater than 0 the catcher
+// will never collect more than the specified number of errors,
+// discarding earlier messages when adding new messages.
+func MakeExtendedCatcher(size int) Catcher { return makeExtCatcher(&baseCatcher{maxSize: size}) }
 
 // Add takes an error object and, if it's non-nil, adds it to the
 // internal collection of errors.
@@ -114,8 +123,16 @@ func (c *baseCatcher) Add(err error) {
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
+	c.safeAdd(err)
+}
 
-	c.errs = append(c.errs, err)
+func (c *baseCatcher) safeAdd(err error) {
+	if c.maxSize <= 0 || c.maxSize > len(c.errs) {
+		c.errs = append(c.errs, err)
+	} else {
+		c.errs = c.errs[1:]
+		c.errs = append(c.errs, err)
+	}
 }
 
 // Len returns the number of errors stored in the collector.
@@ -149,7 +166,7 @@ func (c *baseCatcher) Extend(errs []error) {
 			continue
 		}
 
-		c.errs = append(c.errs, err)
+		c.safeAdd(err)
 	}
 }
 
@@ -250,6 +267,12 @@ func (c *baseCatcher) Resolve() error {
 //
 // separate implementations of grip.Catcher with different string formatting options.
 
+type basicCatcherConstructor func(*baseCatcher)
+
+func makeExtCatcher(bc *baseCatcher) Catcher    { c := &extendedCatcher{bc}; bc.Stringer = c; return bc }
+func makeSimpleCatcher(bc *baseCatcher) Catcher { c := &simpleCatcher{bc}; bc.Stringer = c; return bc }
+func makeBasicCatcher(bc *baseCatcher) Catcher  { c := &basicCatcher{bc}; bc.Stringer = c; return bc }
+
 type extendedCatcher struct{ *baseCatcher }
 
 func (c *extendedCatcher) String() string {
@@ -301,6 +324,7 @@ func (c *basicCatcher) String() string {
 
 type timeAnnotatingCatcher struct {
 	errs     []*timestampError
+	maxSize  int
 	extended bool
 	mu       sync.RWMutex
 }
@@ -308,11 +332,43 @@ type timeAnnotatingCatcher struct {
 // NewTimestampCatcher produces a Catcher instance that reports the
 // short form of all constituent errors and annotates those errors
 // with a timestamp to reflect when the error was collected.
-func NewTimestampCatcher() Catcher { return &timeAnnotatingCatcher{} }
+func NewTimestampCatcher() Catcher { return MakeTimestampCatcher(0) }
 
 // NewExtendedTimestampCatcher adds long-form annotation to the
 // aggregated error message (e.g. including stacks, when possible.)
-func NewExtendedTimestampCatcher() Catcher { return &timeAnnotatingCatcher{extended: true} }
+func NewExtendedTimestampCatcher() Catcher { return MakeExtendedTimestampCatcher(0) }
+
+// MakeTimestampCatcher constructs a Catcher instance that annotates
+// all errors with their collection time; however, if the size is
+// greater than 0 the catcher will never collect more than the
+// specified number of errors, discarding earlier messages when adding
+// new messages.
+func MakeTimestampCatcher(size int) Catcher {
+	if size < 0 {
+		size = 0
+	}
+
+	return &timeAnnotatingCatcher{
+		errs:    make([]*timestampError, 0, size),
+		maxSize: size,
+	}
+}
+
+// MakeTimestampCatcher constructs a Catcher instance that annotates
+// all errors with their collection time and also captures stacks when
+// possible. If the size greater than 0 the catcher will never collect
+// more than the specified number of errors, discarding earlier
+// messages when adding new messages.
+func MakeExtendedTimestampCatcher(size int) Catcher {
+	if size < 0 {
+		size = 0
+	}
+	return &timeAnnotatingCatcher{
+		errs:     make([]*timestampError, 0, size),
+		maxSize:  size,
+		extended: true,
+	}
+}
 
 func (c *timeAnnotatingCatcher) Add(err error) {
 	if err == nil {
@@ -322,13 +378,20 @@ func (c *timeAnnotatingCatcher) Add(err error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	tserr := newTimeStampError(err)
+	c.safeAdd(newTimeStampError(err))
+}
 
+func (c *timeAnnotatingCatcher) safeAdd(tserr *timestampError) {
 	if tserr == nil {
 		return
 	}
 
-	c.errs = append(c.errs, tserr.setExtended(c.extended))
+	if c.maxSize <= 0 || c.maxSize > len(c.errs) {
+		c.errs = append(c.errs, tserr)
+	} else {
+		c.errs = c.errs[1:]
+		c.errs = append(c.errs, tserr)
+	}
 }
 
 func (c *timeAnnotatingCatcher) Extend(errs []error) {
@@ -344,7 +407,7 @@ func (c *timeAnnotatingCatcher) Extend(errs []error) {
 			continue
 		}
 
-		c.errs = append(c.errs, newTimeStampError(err).setExtended(c.extended))
+		c.safeAdd(newTimeStampError(err).setExtended(c.extended))
 	}
 }
 
