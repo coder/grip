@@ -1,7 +1,7 @@
 package message
 
 import (
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 type condComposer struct {

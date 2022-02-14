@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 // Email represents the parameters of an email message

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 	"github.com/pkg/errors"
 )
 

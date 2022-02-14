@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 var goStatsCache *goStats

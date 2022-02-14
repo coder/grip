@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync"
 
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
 	"github.com/bluele/slack"
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
 )
 
 const (

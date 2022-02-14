@@ -1,4 +1,4 @@
-module github.com/cdr/grip
+module cdr.dev/grip
 
 go 1.14
 

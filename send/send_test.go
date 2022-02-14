@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )

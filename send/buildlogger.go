@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
 )
 
 type buildlogger struct {

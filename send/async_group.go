@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 )
 
 type asyncGroupSender struct {

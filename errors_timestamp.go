@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 	"github.com/pkg/errors"
 )
 

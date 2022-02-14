@@ -19,8 +19,8 @@ Loging helpers exist for the following levels:
 package logging
 
 import (
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
 )
 
 func (g *Grip) Log(l level.Priority, msg interface{}) {

@@ -27,7 +27,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 const maxLevels = 1024

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 // NewPlainLogger returns a configured sender that has no prefix and

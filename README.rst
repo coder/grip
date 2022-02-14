@@ -124,22 +124,22 @@ In addition to a collection of useful output implementations, grip also
 provides tools for managing output including:
 
 - the `multi sender
-  <https://godoc.org/github.com/cdr/grip/send#NewConfiguredMultiSender>`_
+  <https://godoc.org/cdr.dev/grip/send#NewConfiguredMultiSender>`_
   for combining multiple senders to "tee" the output together,
 
 - the `buffering sender
-  <https://godoc.org/github.com/cdr/grip/send#NewBufferedSender>`_ for
+  <https://godoc.org/cdr.dev/grip/send#NewBufferedSender>`_ for
   wrapping a sender with a buffer that will batch messages after reciving a
   specified number of messages, or on a specific interval.
 
 - the `io.Writer
-  <https://godoc.org/github.com/cdr/grip/send#WriterSender>`_ to convert a
+  <https://godoc.org/cdr.dev/grip/send#WriterSender>`_ to convert a
   sender implementation to an io.Writer, to be able to use grip fundamentals
   in situations that call for ``io.Writers`` (e.g. the output of
   subprocesses,.
 
 - the `WrapWriter
-  <https://godoc.org/github.com/cdr/grip/send#WrapWriter>`_ to use an
+  <https://godoc.org/cdr.dev/grip/send#WrapWriter>`_ to use an
   arbitrary ``io.Writer`` interface as a sender.
 
 Logging
@@ -189,7 +189,7 @@ Error Collector for "Continue on Error" Semantics
 
 If you want to do something other than ignore or simply log errors, but don't
 want to abort after an error, the `Catcher Interface
-<https://godoc.org/github.com/cdr/grip#Catcher>`_ provides a threadsafe
+<https://godoc.org/cdr.dev/grip#Catcher>`_ provides a threadsafe
 way of aggregating errors. Consider: ::
 
    func doStuff(dirname string) (error) {
@@ -229,7 +229,7 @@ logging, or simplify logging call sites. These methods have a ``<Level>When```
 format.
 
 This is syntactic sugar around the `message.When
-<https://godoc.org/github.com/cdr/grip/message#When>`_ message type, but
+<https://godoc.org/cdr.dev/grip/message#When>`_ message type, but
 can reduce a lot of nesting and call-site complexity.
 
 Composed Logging

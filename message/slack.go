@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"cdr.dev/grip/level"
 	"github.com/bluele/slack"
-	"github.com/cdr/grip/level"
 )
 
 const (
