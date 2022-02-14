@@ -107,8 +107,6 @@ Grip supports a number of different logging output backends:
 - writing messages to a file.
 - sending messages to a slack's channel
 - sending messages to a user via XMPP (jabber.)
-- creating or commeting on a jira ticket
-- creating or commenting on a github issue
 - sending a desktop notification
 - sending an email.
 - sending log output.

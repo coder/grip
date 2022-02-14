@@ -188,10 +188,6 @@ func IsStructured(msg Composer) bool {
 		return true
 	case *GoRuntimeInfo:
 		return true
-	case *jiraMessage:
-		return true
-	case *jiraComment:
-		return false
 	case *errorMessage:
 		return true
 	case *emailMessage:
