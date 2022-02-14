@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 	"github.com/google/go-github/github"
 )
 

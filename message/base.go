@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 // Base provides a simple embedable implementation of some common

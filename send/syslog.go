@@ -1,3 +1,4 @@
+//go:build linux || freebsd || solaris || darwin
 // +build linux freebsd solaris darwin
 
 package send
@@ -8,8 +9,8 @@ import (
 	"log/syslog"
 	"os"
 
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
 )
 
 type syslogger struct {

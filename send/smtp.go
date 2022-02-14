@@ -14,7 +14,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 )
 
 type smtpLogger struct {

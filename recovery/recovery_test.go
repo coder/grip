@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cdr/grip"
-	"github.com/cdr/grip/logging"
-	"github.com/cdr/grip/message"
-	"github.com/cdr/grip/send"
+	"cdr.dev/grip"
+	"cdr.dev/grip/logging"
+	"cdr.dev/grip/message"
+	"cdr.dev/grip/send"
 	"github.com/stretchr/testify/suite"
 )
 

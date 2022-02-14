@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 // GithubState represents the 4 valid states for the Github State API in

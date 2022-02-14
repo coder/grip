@@ -1,6 +1,6 @@
 package send
 
-import "github.com/cdr/grip/message"
+import "cdr.dev/grip/message"
 
 type interceptor struct {
 	Sender

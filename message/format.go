@@ -3,7 +3,7 @@ package message
 import (
 	"fmt"
 
-	"github.com/cdr/grip/level"
+	"cdr.dev/grip/level"
 )
 
 type formatMessenger struct {

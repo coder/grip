@@ -5,9 +5,9 @@ import (
 	"os"
 	"sync"
 
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/message"
-	"github.com/cdr/grip/send"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/message"
+	"cdr.dev/grip/send"
 )
 
 // Grip provides the core implementation of the Logging interface. The

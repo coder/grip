@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cdr/grip/level"
-	"github.com/cdr/grip/logging"
-	"github.com/cdr/grip/message"
-	"github.com/cdr/grip/send"
+	"cdr.dev/grip/level"
+	"cdr.dev/grip/logging"
+	"cdr.dev/grip/message"
+	"cdr.dev/grip/send"
 )
 
 var std = NewJournaler("grip")

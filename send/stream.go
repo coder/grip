@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 )
 
 // this file contains tools to support the slogger interface

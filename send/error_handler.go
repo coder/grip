@@ -3,7 +3,7 @@ package send
 import (
 	"log"
 
-	"github.com/cdr/grip/message"
+	"cdr.dev/grip/message"
 )
 
 // ErrorHandler is a function that you can use define how a sender

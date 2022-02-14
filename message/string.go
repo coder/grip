@@ -1,6 +1,6 @@
 package message
 
-import "github.com/cdr/grip/level"
+import "cdr.dev/grip/level"
 
 type stringMessage struct {
 	Message string `bson:"message" json:"message" yaml:"message"`
