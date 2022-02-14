@@ -36,8 +36,6 @@ func TestPopulatedMessageComposerConstructors(t *testing.T) {
 		NewLineMessage(level.Error, testMsg):                                                   testMsg,
 		MakeGroupComposer(NewString(testMsg)):                                                  testMsg,
 		NewGroupComposer([]Composer{NewString(testMsg)}):                                       testMsg,
-		MakeJiraMessage(&JiraIssue{Summary: testMsg, Type: "Something"}):                       testMsg,
-		NewJiraMessage("", testMsg, JiraField{Key: "type", Value: "Something"}):                testMsg,
 		NewFieldsMessage(level.Error, testMsg, Fields{}):                                       fmt.Sprintf("[message='%s']", testMsg),
 		NewFields(level.Error, Fields{"test": testMsg}):                                        fmt.Sprintf("[test='%s']", testMsg),
 		MakeFieldsMessage(testMsg, Fields{}):                                                   fmt.Sprintf("[message='%s']", testMsg),
@@ -58,7 +56,6 @@ func TestPopulatedMessageComposerConstructors(t *testing.T) {
 			Subject:    "Test msg",
 			Body:       testMsg,
 		}): fmt.Sprintf("To: someone@example.com; Body: %s", testMsg),
-		NewJIRACommentMessage(level.Error, "ABC-123", testMsg): testMsg,
 		NewSlackMessage(level.Error, "@someone", testMsg, nil): fmt.Sprintf("@someone: %s", testMsg),
 	}
 
@@ -125,7 +122,6 @@ func TestUnpopulatedMessageComposers(t *testing.T) {
 		Whenf(false, "", ""),
 		Whenln(false, "", ""),
 		NewEmailMessage(level.Error, Email{}),
-		NewJIRACommentMessage(level.Error, "", ""),
 		NewSlackMessage(level.Error, "", "", nil),
 		MakeComposerProducerMessage(nil),
 		MakeComposerProducerMessage(func() Composer { return nil }),
@@ -363,26 +359,6 @@ func TestComposerConverter(t *testing.T) {
 
 }
 
-func TestJiraMessageComposerConstructor(t *testing.T) {
-	const testMsg = "hello"
-	assert := assert.New(t) // nolint
-	reporterField := JiraField{Key: "Reporter", Value: "Annie"}
-	assigneeField := JiraField{Key: "Assignee", Value: "Sejin"}
-	typeField := JiraField{Key: "Type", Value: "Bug"}
-	labelsField := JiraField{Key: "Labels", Value: []string{"Soul", "Pop"}}
-	unknownField := JiraField{Key: "Artist", Value: "Adele"}
-	msg := NewJiraMessage("project", testMsg, reporterField, assigneeField, typeField, labelsField, unknownField)
-	issue := msg.Raw().(*JiraIssue)
-
-	assert.Equal(issue.Project, "project")
-	assert.Equal(issue.Summary, testMsg)
-	assert.Equal(issue.Reporter, reporterField.Value)
-	assert.Equal(issue.Assignee, assigneeField.Value)
-	assert.Equal(issue.Type, typeField.Value)
-	assert.Equal(issue.Labels, labelsField.Value)
-	assert.Equal(issue.Fields[unknownField.Key], unknownField.Value)
-}
-
 func TestProcessTreeDoesNotHaveDuplicates(t *testing.T) {
 	assert := assert.New(t) // nolint
 
@@ -396,18 +372,6 @@ func TestProcessTreeDoesNotHaveDuplicates(t *testing.T) {
 	}
 
 	assert.Equal(len(seen), len(procs))
-}
-
-func TestJiraIssueAnnotationOnlySupportsStrings(t *testing.T) {
-	assert := assert.New(t) // nolint
-
-	m := &jiraMessage{
-		issue: &JiraIssue{},
-	}
-
-	assert.Error(m.Annotate("k", 1))
-	assert.Error(m.Annotate("k", true))
-	assert.Error(m.Annotate("k", nil))
 }
 
 type causer interface {
